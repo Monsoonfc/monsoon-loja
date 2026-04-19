@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Loja Oficial — Monsoon FC</title>
+<link rel="icon" href="../static/img/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--preto:#080808;--preto2:#111111;--preto3:#1a1a1a;--borda:#2a2a2a;--ouro:#c9a84c;--ouro-claro:#e2c370;--ouro-escuro:#9a7a30;--branco:#f5f0e8;--cinza:#888;--cinza2:#555;--verde:#2d6a4f;--vermelho:#c1121f}
+html{scroll-behavior:smooth}
+body{background:var(--preto);color:var(--branco);font-family:'DM Sans',sans-serif;min-height:100vh}
+.nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--borda);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.nav-brand img{width:36px;height:36px;object-fit:contain}
+.nav-brand span{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--ouro);letter-spacing:.05em}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{color:var(--cinza);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--branco)}
+.cart-btn{position:relative;background:var(--ouro);color:#000;border:none;border-radius:8px;padding:.5rem .9rem;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:background .2s;white-space:nowrap}
+.cart-btn:hover{background:var(--ouro-claro)}
+.cart-count{background:#000;color:var(--ouro);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.hero{background:linear-gradient(135deg,var(--preto) 0%,#1a1200 60%,var(--preto) 100%);border-bottom:1px solid var(--borda);padding:3.5rem 1.5rem 3rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,.08) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--ouro);font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border-radius:20px;margin-bottom:1rem}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5rem);line-height:1;color:var(--branco);letter-spacing:.04em}
+.hero h1 span{color:var(--ouro)}
+.hero p{color:var(--cinza);margin-top:.75rem;font-size:1rem}
+.tabs{display:flex;gap:.5rem;padding:1.5rem 1.5rem 0;border-bottom:1px solid var(--borda);overflow-x:auto;scrollbar-width:none}
+.tab{padding:.6rem 1.2rem;border-radius:8px 8px 0 0;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--cinza);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab.ativo{background:var(--preto2);border-color:var(--borda);color:var(--ouro);border-bottom-color:var(--preto2)}
+.secao{padding:2rem 1.5rem;max-width:1200px;margin:0 auto;display:none}
+.secao.ativo{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.card{background:var(--preto2);border:1px solid var(--borda);border-radius:12px;overflow:hidden;transition:border-color .25s,transform .25s;display:flex;flex-direction:column}
+.card:hover{border-color:var(--ouro-escuro);transform:translateY(-3px)}
+.card-img{background:var(--preto3);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:2rem}
+.card-img img{max-width:100%;max-height:180px;object-fit:contain}
+.card-body{padding:1.2rem;flex:1;display:flex;flex-direction:column;gap:.6rem}
+.card-nome{font-weight:600;font-size:1rem;line-height:1.3}
+.card-desc{color:var(--cinza);font-size:.85rem;line-height:1.5}
+.card-preco{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--ouro);letter-spacing:.03em}
+.tamanhos{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.tamanho-btn{border:1px solid var(--borda);background:transparent;color:var(--branco);padding:.3rem .7rem;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+.tamanho-btn:hover:not(:disabled){border-color:var(--ouro);color:var(--ouro)}
+.tamanho-btn.selecionado{background:var(--ouro);color:#000;border-color:var(--ouro)}
+.tamanho-btn:disabled{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.tamanho-label{font-size:.75rem;color:var(--cinza);font-weight:500}
+.add-btn{margin-top:auto;background:var(--ouro);color:#000;border:none;padding:.75rem;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .2s;width:100%}
+.add-btn:hover{background:var(--ouro-claro)}
+.add-btn:disabled{background:var(--cinza2);color:var(--cinza);cursor:not-allowed}
+.jogo-card{background:var(--preto2);border:1px solid var(--borda);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;transition:border-color .25s}
+.jogo-card:hover{border-color:var(--ouro-escuro)}
+.jogo-info{flex:1;min-width:200px}
+.jogo-times{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--branco)}
+.jogo-meta{color:var(--cinza);font-size:.85rem;margin-top:.3rem}
+.jogo-setor{display:inline-block;background:rgba(201,168,76,.15);color:var(--ouro);border:1px solid rgba(201,168,76,.3);padding:.2rem .6rem;border-radius:20px;font-size:.75rem;font-weight:600;margin-top:.4rem}
+.jogo-disponivel{color:var(--cinza);font-size:.8rem;margin-top:.3rem}
+.jogo-preco{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--ouro)}
+.sem-jogos{text-align:center;padding:4rem 2rem;color:var(--cinza);border:1px dashed var(--borda);border-radius:12px}
+.sem-jogos .icon{font-size:3rem;margin-bottom:1rem}
+.sem-jogos h3{font-size:1.2rem;color:var(--branco);margin-bottom:.5rem}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.aberto{opacity:1;pointer-events:all}
+.carrinho{position:fixed;right:0;top:0;bottom:0;width:min(420px,100vw);background:var(--preto2);border-left:1px solid var(--borda);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.carrinho.aberto{transform:translateX(0)}
+.carrinho-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between}
+.carrinho-header h2{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--ouro)}
+.fechar-btn{background:transparent;border:1px solid var(--borda);color:var(--branco);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.fechar-btn:hover{background:var(--borda)}
+.carrinho-itens{flex:1;overflow-y:auto;padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.75rem}
+.item-carrinho{background:var(--preto3);border:1px solid var(--borda);border-radius:10px;padding:.9rem 1rem;display:flex;gap:.75rem;align-items:flex-start}
+.item-carrinho-info{flex:1}
+.item-carrinho-nome{font-weight:600;font-size:.9rem;line-height:1.3}
+.item-carrinho-detalhe{color:var(--cinza);font-size:.8rem;margin-top:.15rem}
+.item-carrinho-preco{font-weight:700;font-size:.95rem;color:var(--ouro);white-space:nowrap}
+.qtd-ctrl{display:flex;align-items:center;gap:.4rem;margin-top:.5rem}
+.qtd-btn{background:var(--borda);border:none;color:var(--branco);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qtd-btn:hover{background:var(--cinza2)}
+.qtd-num{font-weight:700;font-size:.9rem;min-width:20px;text-align:center}
+.remover-btn{background:transparent;border:none;color:var(--cinza);cursor:pointer;font-size:.85rem;margin-left:auto;padding:.2rem;transition:color .2s}
+.remover-btn:hover{color:var(--vermelho)}
+.carrinho-vazio{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cinza);gap:1rem;text-align:center}
+.carrinho-vazio .icon{font-size:3rem}
+.carrinho-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--borda)}
+.total-linha{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.total-label{color:var(--cinza);font-size:.9rem}
+.total-valor{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--ouro)}
+.checkout-btn{width:100%;background:var(--ouro);color:#000;border:none;padding:.9rem;border-radius:10px;font-weight:800;font-size:1rem;cursor:pointer;transition:background .2s}
+.checkout-btn:hover{background:var(--ouro-claro)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:1rem}
+.modal-overlay.aberto{opacity:1;pointer-events:all}
+.modal{background:var(--preto2);border:1px solid var(--borda);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:scale(.95);transition:transform .3s}
+.modal-overlay.aberto .modal{transform:scale(1)}
+.modal-header{padding:1.5rem 1.5rem 0;display:flex;align-items:center;justify-content:space-between}
+.modal-header h2{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--ouro)}
+.modal-body{padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.secao-form h3{font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cinza);margin-bottom:.75rem}
+.campo{display:flex;flex-direction:column;gap:.4rem}
+.campo label{font-size:.85rem;font-weight:600}
+.campo input,.campo select{background:var(--preto3);border:1px solid var(--borda);color:var(--branco);padding:.7rem .9rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.campo input:focus,.campo select:focus{border-color:var(--ouro)}
+.campo input::placeholder{color:var(--cinza2)}
+.campos-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.entrega-toggle{display:flex;gap:.5rem}
+.entrega-opt{flex:1;padding:.75rem;border-radius:10px;border:2px solid var(--borda);background:transparent;color:var(--branco);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;text-align:center;transition:all .2s}
+.entrega-opt.selecionado{border-color:var(--ouro);background:rgba(201,168,76,.1);color:var(--ouro)}
+.endereco-form{display:flex;flex-direction:column;gap:.75rem;display:none}
+.endereco-form.visivel{display:flex}
+.resumo-pedido{background:var(--preto3);border:1px solid var(--borda);border-radius:10px;padding:1rem}
+.resumo-linha{display:flex;justify-content:space-between;font-size:.9rem;padding:.3rem 0}
+.resumo-linha.total{border-top:1px solid var(--borda);padding-top:.75rem;margin-top:.25rem;font-weight:700;font-size:1rem;color:var(--ouro)}
+.btn-pagar{width:100%;background:var(--ouro);color:#000;border:none;padding:1rem;border-radius:10px;font-weight:800;font-size:1rem;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-pagar:hover{background:var(--ouro-claro)}
+.btn-pagar:disabled{background:var(--cinza2);color:var(--cinza);cursor:not-allowed}
+.mp-badge{text-align:center;color:var(--cinza);font-size:.75rem;margin-top:.5rem}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--preto2);border:1px solid var(--borda);color:var(--branco);padding:.75rem 1.25rem;border-radius:10px;font-size:.9rem;font-weight:500;z-index:400;transition:transform .35s cubic-bezier(.4,0,.2,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.visivel{transform:translateX(-50%) translateY(0)}
+.toast.sucesso{border-color:var(--verde)}
+.toast.erro{border-color:var(--vermelho)}
+.loading{display:flex;align-items:center;justify-content:center;padding:4rem;color:var(--cinza);gap:.75rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:24px;height:24px;border:2px solid var(--borda);border-top-color:var(--ouro);border-radius:50%;animation:spin .7s linear infinite}
+@media(max-width:600px){.nav-links{display:none}.campos-grid{grid-template-columns:1fr}.jogo-card{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="../index.html" class="nav-brand"><img src="../static/img/logo.png" alt="Monsoon FC"><span>Monsoon FC</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Inicio</a>
+    <a href="../feed/index.html">Feed</a>
+    <a href="../resultados/index.html">Resultados</a>
+  </div>
+  <button class="cart-btn" onclick="abrirCarrinho()">🛒 Carrinho <span class="cart-count" id="cartCount">0</span></button>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Loja Oficial</div>
+  <h1>MONSOON <span>STORE</span></h1>
+  <p>Produtos oficiais do Clube do Litoral Norte Gaucho</p>
+</div>
+<div class="tabs">
+  <button class="tab ativo" onclick="mudarTab('camisetas',this)">👕 Camisetas</button>
+  <button class="tab" onclick="mudarTab('ingressos',this)">🎟️ Ingressos</button>
+</div>
+<section class="secao ativo" id="sec-camisetas">
+  <div class="loading" id="loading-camisetas"><div class="spinner"></div> Carregando produtos...</div>
+  <div class="grid" id="grid-camisetas"></div>
+</section>
+<section class="secao" id="sec-ingressos">
+  <div class="loading" id="loading-ingressos"><div class="spinner"></div> Carregando jogos...</div>
+  <div id="lista-ingressos"></div>
+</section>
+<div class="overlay" id="overlay" onclick="fecharCarrinho()"></div>
+<aside class="carrinho" id="carrinho">
+  <div class="carrinho-header"><h2>Carrinho</h2><button class="fechar-btn" onclick="fecharCarrinho()">✕</button></div>
+  <div class="carrinho-itens" id="carrinho-itens"><div class="carrinho-vazio"><div class="icon">🛒</div><p>Seu carrinho esta vazio</p></div></div>
+  <div class="carrinho-footer" id="carrinho-footer" style="display:none">
+    <div class="total-linha"><span class="total-label">Total</span><span class="total-valor" id="total-valor">R$ 0,00</span></div>
+    <button class="checkout-btn" onclick="abrirCheckout()">Finalizar compra →</button>
+  </div>
+</aside>
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header"><h2>Finalizar Pedido</h2><button class="fechar-btn" onclick="fecharModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="secao-form"><h3>Seus dados</h3>
+        <div class="campo"><label>Nome completo *</label><input type="text" id="cli-nome" placeholder="Joao Silva"></div>
+        <div class="campo"><label>E-mail *</label><input type="email" id="cli-email" placeholder="joao@email.com"></div>
+        <div class="campo"><label>CPF *</label><input type="text" id="cli-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"></div>
+        <div class="campo"><label>Telefone</label><input type="text" id="cli-tel" placeholder="(51) 99999-9999" maxlength="15" oninput="mascaraTel(this)"></div>
+      </div>
+      <div class="secao-form"><h3>Entrega ou retirada?</h3>
+        <div class="entrega-toggle">
+          <button class="entrega-opt selecionado" id="opt-retirada" onclick="selecionarEntrega('retirada')">🏪 Retirar na loja</button>
+          <button class="entrega-opt" id="opt-entrega" onclick="selecionarEntrega('entrega')">📦 Receber em casa<br><small style="font-weight:400;font-size:.75rem">+ R$ 25,00 frete</small></button>
+        </div>
+        <div class="endereco-form" id="endereco-form">
+          <div class="campo"><label>CEP *</label><input type="text" id="end-cep" placeholder="99000-000" maxlength="9" oninput="mascaraCEP(this)" onblur="buscarCEP()"></div>
+          <div class="campo"><label>Rua *</label><input type="text" id="end-rua" placeholder="Rua das Flores"></div>
+          <div class="campos-grid">
+            <div class="campo"><label>Numero *</label><input type="text" id="end-num" placeholder="123"></div>
+            <div class="campo"><label>Complemento</label><input type="text" id="end-comp" placeholder="Apto 2"></div>
+          </div>
+          <div class="campo"><label>Bairro *</label><input type="text" id="end-bairro" placeholder="Centro"></div>
+          <div class="campos-grid">
+            <div class="campo"><label>Cidade *</label><input type="text" id="end-cidade" placeholder="Capao da Canoa"></div>
+            <div class="campo"><label>UF *</label><input type="text" id="end-uf" placeholder="RS" maxlength="2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="secao-form"><h3>Resumo do pedido</h3><div class="resumo-pedido" id="resumo-pedido"></div></div>
+      <button class="btn-pagar" id="btn-pagar" onclick="finalizarPedido()">🔒 Pagar com Mercado Pago</button>
+      <p class="mp-badge">Pagamento 100% seguro via Mercado Pago · PIX, cartao e boleto</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const API_URL='https://monsoon-loja.up.railway.app';
+let produtos=[],jogos=[],carrinho=[],tipoEntrega='retirada';
+async function init(){await Promise.all([carregarProdutos(),carregarJogos()]);}
+async function carregarProdutos(){try{const r=await fetch(API_URL+'/api/produtos');produtos=await r.json();renderProdutos();}catch{document.getElementById('grid-camisetas').innerHTML='<p style="color:var(--cinza);padding:2rem">Erro ao carregar produtos.</p>';}finally{document.getElementById('loading-camisetas').style.display='none';}}
+async function carregarJogos(){try{const r=await fetch(API_URL+'/api/jogos');jogos=await r.json();renderJogos();}catch{document.getElementById('lista-ingressos').innerHTML='<p style="color:var(--cinza);padding:2rem">Erro ao carregar jogos.</p>';}finally{document.getElementById('loading-ingressos').style.display='none';}}
+function renderProdutos(){const grid=document.getElementById('grid-camisetas');if(!produtos.length){grid.innerHTML='<p style="color:var(--cinza);padding:2rem">Nenhum produto disponivel.</p>';return;}grid.innerHTML=produtos.map(p=>{const ts=Object.entries(p.estoque||{});const th=ts.map(([t,q])=>'<button class="tamanho-btn" data-tam="'+t+'" onclick="selecionarTamanho(this,''+p.id+'')"'+(q===0?' disabled':'')+'>'+t+'</button>').join('');return '<div class="card"><div class="card-img"><img src="'+p.imagem+'" alt="'+p.nome+'" onerror="this.src='../static/img/logo.png'"></div><div class="card-body"><div class="card-nome">'+p.nome+'</div><div class="card-desc">'+p.descricao+'</div><div class="card-preco">R$ '+p.preco.toFixed(2).replace('.',',')+'</div><div class="tamanho-label">Selecione o tamanho:</div><div class="tamanhos" id="tam-'+p.id+'">'+th+'</div><button class="add-btn" id="add-'+p.id+'" onclick="adicionarProduto(''+p.id+'')" disabled>Selecione um tamanho</button></div></div>';}).join('');}
+function selecionarTamanho(btn,id){document.getElementById('tam-'+id).querySelectorAll('.tamanho-btn').forEach(b=>b.classList.remove('selecionado'));btn.classList.add('selecionado');const a=document.getElementById('add-'+id);a.disabled=false;a.textContent='+ Adicionar ao carrinho';}
+function adicionarProduto(id){const p=produtos.find(x=>x.id===id);const c=document.getElementById('tam-'+id).querySelector('.tamanho-btn.selecionado');if(!c)return;const t=c.dataset.tam;const e=carrinho.find(i=>i.id===id&&i.tamanho===t);if(e)e.quantidade++;else carrinho.push({id,tipo:'camiseta',nome:p.nome,tamanho:t,preco:p.preco,quantidade:1});atualizarCarrinho();toast(p.nome+' ('+t+') adicionado! 🛒','sucesso');}
+function renderJogos(){const l=document.getElementById('lista-ingressos');if(!jogos.length){l.innerHTML='<div class="sem-jogos"><div class="icon">📅</div><h3>Nenhum jogo disponivel</h3><p>Ingressos serao liberados em breve.<br>Acompanhe no Instagram!</p><br><a href="https://www.instagram.com/monsoon_fc_/" target="_blank" style="color:var(--ouro);font-weight:600">@monsoon_fc_ →</a></div>';return;}l.innerHTML='<div style="display:flex;flex-direction:column;gap:1rem">'+jogos.map(j=>{const d=new Date(j.data).toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'});return '<div class="jogo-card"><div class="jogo-info"><div class="jogo-times">Monsoon FC × '+j.adversario+'</div><div class="jogo-meta">📅 '+d+' · 📍 '+(j.estadio||'Capao da Canoa')+'</div><span class="jogo-setor">'+j.setor+'</span><div class="jogo-disponivel">'+j.ingressos_disponiveis+' ingressos disponiveis</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:.75rem"><div class="jogo-preco">R$ '+j.preco.toFixed(2).replace('.',',')+'</div><button class="add-btn" style="width:auto;padding:.7rem 1.4rem" onclick="adicionarIngresso(''+j.id+'')">🎟️ Comprar ingresso</button></div></div>';}).join('')+'</div>';}
+function adicionarIngresso(id){const j=jogos.find(x=>x.id===id);const e=carrinho.find(i=>i.id===id&&i.tipo==='ingresso');if(e){if(e.quantidade>=j.ingressos_disponiveis){toast('Limite atingido','erro');return;}e.quantidade++;}else carrinho.push({id,tipo:'ingresso',nome:'Monsoon FC x '+j.adversario,setor:j.setor,preco:j.preco,quantidade:1});atualizarCarrinho();toast('Ingresso adicionado! 🎟️','sucesso');}
+function atualizarCarrinho(){const t=carrinho.reduce((a,i)=>a+i.preco*i.quantidade,0);const c=carrinho.reduce((a,i)=>a+i.quantidade,0);document.getElementById('cartCount').textContent=c;const el=document.getElementById('carrinho-itens');const f=document.getElementById('carrinho-footer');if(!carrinho.length){el.innerHTML='<div class="carrinho-vazio"><div class="icon">🛒</div><p>Carrinho vazio</p></div>';f.style.display='none';return;}f.style.display='block';document.getElementById('total-valor').textContent='R$ '+t.toFixed(2).replace('.',',');el.innerHTML=carrinho.map((i,x)=>'<div class="item-carrinho"><div class="item-carrinho-info"><div class="item-carrinho-nome">'+i.nome+'</div><div class="item-carrinho-detalhe">'+(i.tamanho?'Tamanho: '+i.tamanho:i.setor?'Setor: '+i.setor:'')+'</div><div class="qtd-ctrl"><button class="qtd-btn" onclick="alterarQtd('+x+',-1)">−</button><span class="qtd-num">'+i.quantidade+'</span><button class="qtd-btn" onclick="alterarQtd('+x+',1)">+</button><button class="remover-btn" onclick="removerItem('+x+')">✕ remover</button></div></div><div class="item-carrinho-preco">R$ '+(i.preco*i.quantidade).toFixed(2).replace('.',',')+'</div></div>').join('');}
+function alterarQtd(i,d){carrinho[i].quantidade+=d;if(carrinho[i].quantidade<=0)carrinho.splice(i,1);atualizarCarrinho();}
+function removerItem(i){carrinho.splice(i,1);atualizarCarrinho();}
+function abrirCarrinho(){document.getElementById('carrinho').classList.add('aberto');document.getElementById('overlay').classList.add('aberto');}
+function fecharCarrinho(){document.getElementById('carrinho').classList.remove('aberto');document.getElementById('overlay').classList.remove('aberto');}
+function abrirCheckout(){fecharCarrinho();atualizarResumo();document.getElementById('modal-overlay').classList.add('aberto');}
+function fecharModal(){document.getElementById('modal-overlay').classList.remove('aberto');}
+function selecionarEntrega(t){tipoEntrega=t;document.getElementById('opt-retirada').classList.toggle('selecionado',t==='retirada');document.getElementById('opt-entrega').classList.toggle('selecionado',t==='entrega');document.getElementById('endereco-form').classList.toggle('visivel',t==='entrega');atualizarResumo();}
+function atualizarResumo(){const s=carrinho.reduce((a,i)=>a+i.preco*i.quantidade,0);const fr=tipoEntrega==='entrega'?25:0;const tot=s+fr;document.getElementById('resumo-pedido').innerHTML=carrinho.map(i=>'<div class="resumo-linha"><span>'+i.nome+(i.tamanho?' ('+i.tamanho+')':'')+' × '+i.quantidade+'</span><span>R$ '+(i.preco*i.quantidade).toFixed(2).replace('.',',')+'</span></div>').join('')+(fr?'<div class="resumo-linha"><span>Frete</span><span>R$ 25,00</span></div>':'')+'<div class="resumo-linha total"><span>Total</span><span>R$ '+tot.toFixed(2).replace('.',',')+'</span></div>'+(tipoEntrega==='retirada'?'<div style="font-size:.8rem;color:var(--cinza);margin-top:.5rem">🏪 Retirada a combinar via Instagram</div>':'');}
+async function buscarCEP(){const cep=document.getElementById('end-cep').value.replace(/D/g,'');if(cep.length!==8)return;try{const r=await fetch('https://viacep.com.br/ws/'+cep+'/json/');const d=await r.json();if(!d.erro){document.getElementById('end-rua').value=d.logradouro||'';document.getElementById('end-bairro').value=d.bairro||'';document.getElementById('end-cidade').value=d.localidade||'';document.getElementById('end-uf').value=d.uf||'';}}catch{}}
+async function finalizarPedido(){const nome=document.getElementById('cli-nome').value.trim();const email=document.getElementById('cli-email').value.trim();const cpf=document.getElementById('cli-cpf').value.trim();const tel=document.getElementById('cli-tel').value.trim();if(!nome||!email||!cpf){toast('Preencha todos os campos obrigatorios (*)','erro');return;}if(!/^[^s@]+@[^s@]+.[^s@]+$/.test(email)){toast('E-mail invalido','erro');return;}let entrega={tipo:tipoEntrega};if(tipoEntrega==='entrega'){const rua=document.getElementById('end-rua').value.trim();const num=document.getElementById('end-num').value.trim();const bairro=document.getElementById('end-bairro').value.trim();const cidade=document.getElementById('end-cidade').value.trim();const uf=document.getElementById('end-uf').value.trim();const cep=document.getElementById('end-cep').value.trim();const comp=document.getElementById('end-comp').value.trim();if(!rua||!num||!bairro||!cidade||!uf||!cep){toast('Preencha o endereco completo','erro');return;}entrega.endereco={rua,numero:num,complemento:comp,bairro,cidade,uf,cep};}const btn=document.getElementById('btn-pagar');btn.disabled=true;btn.innerHTML='<div class="spinner" style="border-top-color:#000"></div> Processando...';try{const r=await fetch(API_URL+'/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({itens:carrinho,cliente:{nome,email,cpf,telefone:tel},entrega})});const data=await r.json();if(!r.ok)throw new Error(data.erro||'Erro desconhecido');window.location.href=data.checkout_url;}catch(err){toast(err.message||'Erro ao processar pedido.','erro');btn.disabled=false;btn.innerHTML='🔒 Pagar com Mercado Pago';}}
+function mudarTab(s,b){document.querySelectorAll('.secao').forEach(x=>x.classList.remove('ativo'));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('ativo'));document.getElementById('sec-'+s).classList.add('ativo');b.classList.add('ativo');}
+function toast(msg,tipo=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+tipo+' visivel';setTimeout(()=>t.classList.remove('visivel'),3000);}
+function mascaraCPF(i){let v=i.value.replace(/D/g,'').slice(0,11);v=v.replace(/(d{3})(d)/,'$1.$2');v=v.replace(/(d{3})(d)/,'$1.$2');v=v.replace(/(d{3})(d{1,2})$/,'$1-$2');i.value=v;}
+function mascaraTel(i){let v=i.value.replace(/D/g,'').slice(0,11);v=v.replace(/(d{2})(d)/,'($1) $2');v=v.replace(/(d{5})(d{4})$/,'$1-$2');i.value=v;}
+function mascaraCEP(i){let v=i.value.replace(/D/g,'').slice(0,8);v=v.replace(/(d{5})(d)/,'$1-$2');i.value=v;}
+init();
+</script>
+</body>
+</html>
