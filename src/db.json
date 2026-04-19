@@ -1,0 +1,26 @@
+{
+  "produtos": [
+    {
+      "id": "camisa-home-2025",
+      "tipo": "camiseta",
+      "nome": "Camisa Oficial Monsoon FC 2025 - Mandante",
+      "descricao": "Camisa oficial do mando, preta com detalhes dourados.",
+      "preco": 150.00,
+      "imagem": "https://monsoonfc.github.io/monsoon-fc-site/static/img/logo.png",
+      "ativo": true,
+      "estoque": { "PP": 5, "P": 10, "M": 15, "G": 12, "GG": 8, "XGG": 4 }
+    },
+    {
+      "id": "camisa-away-2025",
+      "tipo": "camiseta",
+      "nome": "Camisa Oficial Monsoon FC 2025 - Visitante",
+      "descricao": "Camisa de visitante, branca com detalhes dourados.",
+      "preco": 150.00,
+      "imagem": "https://monsoonfc.github.io/monsoon-fc-site/static/img/logo.png",
+      "ativo": true,
+      "estoque": { "PP": 3, "P": 7, "M": 10, "G": 8, "GG": 5, "XGG": 2 }
+    }
+  ],
+  "jogos": [],
+  "pedidos": []
+}
